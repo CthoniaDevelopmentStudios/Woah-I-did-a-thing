@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Nahuatl Dictionary</title>
+    <style>
+        :root {
+            --primary-color: #7b2d26;
+            --secondary-color: #f4efe6;
+            --text-color: #2b2b2b;
+            --accent-color: #4a1510;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #faf7f2;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            padding: 1.5rem 2rem;
+            border-bottom: 4px solid var(--accent-color);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        header p {
+            margin: 0.5rem 0 0 0;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        nav {
+            background-color: var(--accent-color);
+            padding: 0.75rem 2rem;
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .alert-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 1rem 1.25rem;
+            border-radius: 6px;
+            margin-bottom: 2rem;
+        }
+
+        .search-section {
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.04);
+            margin-bottom: 2.5rem;
+        }
+
+        .search-section h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 0.75rem;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--accent-color);
+        }
+
+        .explore-section {
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.04);
+        }
+
+        .explore-section h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .quick-links {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .quick-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .quick-links li:last-child {
+            margin-bottom: 0;
+        }
+
+        .quick-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .quick-links a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: var(--secondary-color);
+            border-top: 1px solid #e2d9cd;
+            padding: 2rem;
+            font-size: 0.85rem;
+            color: #555555;
+            margin-top: 4rem;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Online Nahuatl Dictionary</h1>
+        <p>Stephanie Wood, Editor • Wired Humanities Projects, University of Oregon</p>
+    </header>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#search">Search</a>
+        <a href="#contributors">Contributors</a>
+        <a href="#donate">Donate</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <main>
+        <div class="alert-box">
+            <strong>System Notice:</strong> Repairs to some of our search pages are ongoing. Elements of the Advanced Search and the Alphabetical Listings are fully operational. Thank you for your patience!
+        </div>
+
+        <section id="search" class="search-section">
+            <h2>Search the Dictionary</h2>
+            <form id="dictionary-form" onsubmit="handleSearch(event)">
+                <div class="form-row">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="headword">Headword</label>
+                        <input type="text" id="headword" name="headword" placeholder="Enter Nahuatl word (e.g., calli, metl)...">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="match-type">Match Criteria</label>
+                        <select id="match-type" name="match-type">
+                            <option value="contains">Contains</option>
+                            <option value="starts">Starts with</option>
+                            <option value="ends">Ends with</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 1.25rem; margin-bottom: 1.5rem;">
+                    <label for="field-select">Field</label>
+                    <select id="field-select" name="field-select">
+                        <option value="any">Any Field Contains</option>
+                        <option value="headword-only">Headword Only</option>
+                    </select>
+                </div>
+                <button type="submit">Search Database</button>
+            </form>
+        </section>
+
+        <section class="explore-section">
+            <h3>Explore Dictionary Indices</h3>
+            <ul class="quick-links">
+                <li><a href="#" onclick="alert('Navigating to Alphabetical Listing...'); return false;">See entire list of Nahuatl words (Alphabetical List)</a></li>
+                <li><a href="#" onclick="alert('Opening Preset Themes...'); return false;">Browse Preset Themes</a></li>
+                <li><a href="#" onclick="alert('Loading Spanish loanwords...'); return false;">See all loanwords from Spanish</a></li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p><strong>Online Nahuatl Dictionary</strong>, Stephanie Wood, ed. (Eugene, Ore.: Wired Humanities Projects, College of Education, University of Oregon, ©2000–present).</p>
+        <p>The team acknowledges generous support from the National Science Foundation and the National Endowment for the Humanities (Documenting Endangered Languages Grant), alongside significant contributions from our colleagues at the Zacatecas Institute for Teaching and Research in Ethnology.</p>
+    </footer>
+
+    <script>
+        function handleSearch(event) {
+            event.preventDefault();
+            const headword = document.getElementById('headword').value;
+            const matchType = document.getElementById('match-type').value;
+            
+            if (!headword.trim()) {
+                alert('Please enter a search term.');
+                return;
+            }
+            
+            alert(`Searching for "${headword}" using rule: ${matchType}. (This is a static template frontend ready for your GitHub host!)`);
+        }
+    </script>
+
+</body>
+</html>
