@@ -3,262 +3,384 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nahuatl Learning & Dictionary Hub</title>
+    <title>Azta - Adaptive Language Mastery</title>
     <style>
         :root {
-            --primary: #7b2d26;
-            --primary-dark: #4a1510;
-            --accent: #d97706;
-            --bg: #faf7f2;
+            --primary: #58cc02;
+            --primary-dark: #46a302;
+            --accent: #1cb0f6;
+            --bg: #f7f9fa;
             --card-bg: #ffffff;
-            --text: #2b2b2b;
-            --gray: #e5e7eb;
+            --text: #3c3c3c;
+            --gray: #e5e5e5;
+            --danger: #ff4b4b;
+            --success: #58cc02;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
 
         body {
             background-color: var(--bg);
             color: var(--text);
-            line-height: 1.5;
-            padding-bottom: 3rem;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         header {
-            background-color: var(--primary);
-            color: white;
-            padding: 2rem 1rem;
-            text-align: center;
-            border-bottom: 4px solid var(--primary-dark);
+            background: white;
+            border-bottom: 2px solid var(--gray);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-        header p { opacity: 0.9; font-size: 0.95rem; }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
 
-        .container {
+        .stats-bar {
+            display: flex;
+            gap: 1.5rem;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        main {
+            flex: 1;
             max-width: 800px;
+            width: 100%;
             margin: 2rem auto;
             padding: 0 1rem;
         }
 
-        .card {
+        .app-container {
             background: var(--card-bg);
-            border: 1px solid var(--gray);
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border: 2px solid var(--gray);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 0 0 var(--gray);
             margin-bottom: 2rem;
         }
 
-        h2 { color: var(--primary); margin-bottom: 1rem; font-size: 1.35rem; }
+        .progress-container {
+            background: var(--gray);
+            height: 16px;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
 
-        /* Search Bar */
-        .search-box {
-            display: flex;
-            gap: 0.5rem;
+        .progress-bar {
+            background: var(--primary);
+            height: 100%;
+            width: 20%;
+            transition: width 0.3s ease;
+            border-radius: 8px;
+        }
+
+        .lesson-header {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #4b4b4b;
+        }
+
+        .challenge-prompt {
+            font-size: 1.6rem;
+            font-weight: 800;
             margin-bottom: 1.5rem;
         }
 
-        input[type="text"] {
-            flex: 1;
-            padding: 0.75rem 1rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 1rem;
-            outline: none;
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
 
-        input[type="text"]:focus { border-color: var(--primary); }
+        @media (max-width: 600px) {
+            .options-grid { grid-template-columns: 1fr; }
+        }
 
-        button {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
+        .option-card {
+            background: white;
+            border: 2px solid var(--gray);
+            border-bottom: 4px solid var(--gray);
+            border-radius: 16px;
+            padding: 1.25rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        button:hover { background-color: var(--primary-dark); }
-
-        /* Results List */
-        .results-list {
-            list-style: none;
-        }
-
-        .result-item {
-            padding: 1rem;
-            border-bottom: 1px solid var(--gray);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .result-item:last-child { border-bottom: none; }
-        .word { font-weight: bold; color: var(--primary); font-size: 1.1rem; }
-        .translation { color: #4b5563; }
-
-        /* Flashcard Practice Mode */
-        .flashcard {
-            background: var(--primary-dark);
-            color: white;
-            padding: 3rem 2rem;
             text-align: center;
-            border-radius: 12px;
             cursor: pointer;
-            min-height: 180px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-            user-select: none;
+            transition: all 0.1s ease;
         }
 
-        .flashcard .prompt { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; margin-bottom: 0.5rem; }
-        .flashcard .term { font-size: 2.2rem; font-weight: bold; }
+        .option-card:hover {
+            background: #f7f7f7;
+            border-color: #cfcfcf;
+        }
 
-        .flashcard-controls {
+        .option-card.selected {
+            background: #ddf4ff;
+            border-color: var(--accent);
+            color: #0077b6;
+        }
+
+        .footer-action {
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            border-top: 2px solid var(--gray);
+            padding-top: 1.5rem;
             margin-top: 1rem;
         }
 
-        .stats {
-            display: flex;
-            gap: 1rem;
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-bottom: 4px solid var(--primary-dark);
+            border-radius: 14px;
+            padding: 0.9rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: filter 0.1s;
+        }
+
+        .btn:hover { filter: brightness(1.05); }
+        .btn:active { transform: translateY(2px); border-bottom-width: 2px; }
+
+        .feedback {
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        .feedback.correct { color: var(--success); }
+        .feedback.incorrect { color: var(--danger); }
+
+        .dictionary-tab {
+            margin-top: 3rem;
+            background: white;
+            border: 2px solid var(--gray);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+
+        .dictionary-tab h3 {
             margin-bottom: 1rem;
-            font-size: 0.9rem;
-            color: #6b7280;
+            color: #2b2b2b;
+        }
+
+        .dict-search {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 2px solid var(--gray);
+            border-radius: 12px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            outline: none;
+        }
+        .dict-search:focus { border-color: var(--accent); }
+
+        .dict-list {
+            list-style: none;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .dict-item {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--gray);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95rem;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Nahuatl Vocabulary & Dictionary</h1>
-        <p>Interactive study tool and word lookup ready for GitHub Pages</p>
+        <div class="logo">Azta</div>
+        <div class="stats-bar">
+            <div class="stat-item">🔥 <span id="streakCount">3</span></div>
+            <div class="stat-item">⚡ <span id="xpCount">120</span> XP</div>
+            <div class="stat-item">❤️ <span id="heartsCount">5</span></div>
+        </div>
     </header>
 
-    <div class="container">
-        
-        <!-- Dictionary Search Section -->
-        <div class="card">
-            <h2>Dictionary Search</h2>
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Search Nahuatl or English word (e.g., calli, house)..." oninput="filterDictionary()">
-                <button onclick="filterDictionary()">Search</button>
+    <main>
+        <div class="app-container">
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
             </div>
-            <ul id="resultsList" class="results-list">
-                <!-- Populated dynamically via JS -->
+
+            <div id="lessonArea">
+                <div class="lesson-header" id="lessonHeader">Select the correct translation</div>
+                <div class="challenge-prompt" id="challengePrompt">Calli</div>
+
+                <div class="options-grid" id="optionsGrid">
+                    <!-- Dynamic Options -->
+                </div>
+
+                <div class="footer-action">
+                    <div class="feedback" id="feedbackMessage"></div>
+                    <button class="btn" id="actionBtn" onclick="handleAction()">Check</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="dictionary-tab">
+            <h3>Nahuatl-English Lexicon (Live Linked Corpus)</h3>
+            <input type="text" class="dict-search" id="dictInput" placeholder="Search dictionary database..." oninput="filterLexicon()">
+            <ul class="dict-list" id="dictList">
+                <!-- Populated Corpus -->
             </ul>
         </div>
-
-        <!-- Flashcard Practice Section -->
-        <div class="card">
-            <h2>Interactive Flashcards</h2>
-            <div class="stats">
-                <span id="cardCounter">Card 1 of 5</span>
-                <span id="scoreTracker">Streak: 0</span>
-            </div>
-            <div class="flashcard" id="flashcardElement" onclick="flipCard()">
-                <div class="prompt" id="cardPrompt">Nahuatl Term</div>
-                <div class="term" id="cardTerm">Calli</div>
-            </div>
-            <div class="flashcard-controls">
-                <button onclick="prevCard()" style="background: #4b5563;">Previous</button>
-                <button onclick="nextCard()">Next Card</button>
-            </div>
-        </div>
-
-    </div>
+    </main>
 
     <script>
-        // Dictionary Dataset
-        const dictionaryData = [
-            { word: "Calli", translation: "House", category: "Noun" },
-            { word: "Metl", translation: "Agave / Century plant", category: "Noun" },
-            { word: "Tlalli", translation: "Earth / Land", category: "Noun" },
-            { word: "Atl", translation: "Water", category: "Noun" },
-            { word: "Tonatiuh", translation: "Sun", category: "Noun" },
-            { word: "Māitl", translation: "Hand / Arm", category: "Noun" },
-            { word: "Yōllotl", translation: "Heart", category: "Noun" }
+        // Core Vocabulary Corpus paired from dictionary records
+        const corpus = [
+            { nahuatl: "Calli", english: "House", category: "Noun" },
+            { nahuatl: "Atl", english: "Water", category: "Noun" },
+            { nahuatl: "Tlalli", english: "Earth", category: "Noun" },
+            { nahuatl: "Tonatiuh", english: "Sun", category: "Noun" },
+            { nahuatl: "Yōllotl", english: "Heart", category: "Noun" },
+            { nahuatl: "Māitl", english: "Hand", category: "Noun" },
+            { nahuatl: "Cōātl", english: "Snake / Serpent", category: "Noun" },
+            { nahuatl: "Teōtl", english: "God / Sacred energy", category: "Noun" }
         ];
 
-        // Search Logic
-        function renderDictionary(items) {
-            const list = document.getElementById('resultsList');
-            list.innerHTML = '';
-            
-            if (items.length === 0) {
-                list.innerHTML = '<li class="result-item">No matching words found.</li>';
-                return;
-            }
+        let currentIndex = 0;
+        let scoreXP = 120;
+        let streak = 3;
+        let hearts = 5;
+        let selectedOption = null;
+        let currentChallenge = null;
+        let state = 'answering'; // 'answering' or 'next'
 
+        const lessons = [
+            { prompt: "Calli", target: "House", distractors: ["Water", "Sun", "Earth"] },
+            { prompt: "Atl", target: "Water", distractors: ["House", "Heart", "Hand"] },
+            { prompt: "Tonatiuh", target: "Sun", distractors: ["Earth", "Snake", "Water"] },
+            { prompt: "Yōllotl", target: "Heart", distractors: ["Hand", "House", "Sun"] },
+            { prompt: "Tlalli", target: "Earth", distractors: ["Water", "God", "House"] }
+        ];
+
+        function loadLesson() {
+            state = 'answering';
+            selectedOption = null;
+            document.getElementById('feedbackMessage').innerText = '';
+            const btn = document.getElementById('actionBtn');
+            btn.innerText = 'Check';
+            btn.style.background = 'var(--primary)';
+
+            currentChallenge = lessons[currentIndex];
+            document.getElementById('challengePrompt').innerText = `What does "${currentChallenge.prompt}" mean?`;
+            
+            // Progress update
+            const progressPercent = ((currentIndex) / lessons.length) * 100;
+            document.getElementById('progressBar').style.width = `${Math.max(10, progressPercent)}%`;
+
+            // Shuffle options
+            let options = [currentChallenge.target, ...currentChallenge.distractors];
+            options.sort(() => Math.random() - 0.5);
+
+            const grid = document.getElementById('optionsGrid');
+            grid.innerHTML = '';
+            options.forEach(opt => {
+                const card = document.createElement('div');
+                card.className = 'option-card';
+                card.innerText = opt;
+                card.onclick = () => selectOption(card, opt);
+                grid.appendChild(card);
+            });
+        }
+
+        function selectOption(cardElement, optionText) {
+            if (state !== 'answering') return;
+            document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+            cardElement.classList.add('selected');
+            selectedOption = optionText;
+        }
+
+        function handleAction() {
+            if (state === 'answering') {
+                if (!selectedOption) return;
+                
+                const feedbackEl = document.getElementById('feedbackMessage');
+                const btn = document.getElementById('actionBtn');
+
+                if (selectedOption === currentChallenge.target) {
+                    feedbackEl.innerText = 'Correct! Great job.';
+                    feedbackEl.className = 'feedback correct';
+                    scoreXP += 10;
+                    document.getElementById('xpCount').innerText = scoreXP;
+                } else {
+                    feedbackEl.innerText = `Incorrect. The correct answer was "${currentChallenge.target}".`;
+                    feedbackEl.className = 'feedback incorrect';
+                    hearts = Math.max(0, hearts - 1);
+                    document.getElementById('heartsCount').innerText = hearts;
+                }
+
+                btn.innerText = 'Continue';
+                btn.style.background = 'var(--accent)';
+                state = 'next';
+            } else {
+                currentIndex++;
+                if (currentIndex < lessons.length) {
+                    loadLesson();
+                } else {
+                    document.getElementById('lessonArea').innerHTML = `
+                        <div style="text-align: center; padding: 2rem;">
+                            <h2>🎉 Lesson Completed!</h2>
+                            <p style="margin: 1rem 0; color: #666;">You've mastered this adaptive module.</p>
+                            <button class="btn" onclick="resetApp()">Practice Again</button>
+                        </div>
+                    `;
+                    document.getElementById('progressBar').style.width = '100%';
+                }
+            }
+        }
+
+        function resetApp() {
+            currentIndex = 0;
+            location.reload();
+        }
+
+        function renderLexicon(items) {
+            const list = document.getElementById('dictList');
+            list.innerHTML = '';
             items.forEach(item => {
                 const li = document.createElement('li');
-                li.className = 'result-item';
-                li.innerHTML = `
-                    <span class="word">${item.word} <small style="font-weight:normal; color:#888;">(${item.category})</small></span>
-                    <span class="translation">${item.translation}</span>
-                `;
+                li.className = 'dict-item';
+                li.innerHTML = `<span><strong>${item.nahuatl}</strong> (${item.category})</span> <span style="color:#666;">${item.english}</span>`;
                 list.appendChild(li);
             });
         }
 
-        function filterDictionary() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = dictionaryData.filter(item => 
-                item.word.toLowerCase().includes(query) || 
-                item.translation.toLowerCase().includes(query)
-            );
-            renderDictionary(filtered);
+        function filterLexicon() {
+            const query = document.getElementById('dictInput').value.toLowerCase();
+            const filtered = corpus.filter(i => i.nahuatl.toLowerCase().includes(query) || i.english.toLowerCase().includes(query));
+            renderLexicon(filtered);
         }
 
-        // Flashcard Logic
-        let currentCardIndex = 0;
-        let showingTranslation = false;
-        let streak = 0;
-
-        const flashcards = [
-            { nahuatl: "Calli", english: "House" },
-            { nahuatl: "Atl", english: "Water" },
-            { nahuatl: "Tlalli", english: "Earth" },
-            { nahuatl: "Tonatiuh", english: "Sun" },
-            { nahuatl: "Yōllotl", english: "Heart" }
-        ];
-
-        function updateFlashcard() {
-            const card = flashcards[currentCardIndex];
-            document.getElementById('cardPrompt').innerText = showingTranslation ? "English Meaning" : "Nahuatl Term";
-            document.getElementById('cardTerm').innerText = showingTranslation ? card.english : card.nahuatl;
-            document.getElementById('cardCounter').innerText = `Card ${currentCardIndex + 1} of ${flashcards.length}`;
-            document.getElementById('scoreTracker').innerText = `Streak: ${streak}`;
-        }
-
-        function flipCard() {
-            showingTranslation = !showingTranslation;
-            if (showingTranslation) streak++;
-            updateFlashcard();
-        }
-
-        function nextCard() {
-            showingTranslation = false;
-            currentCardIndex = (currentCardIndex + 1) % flashcards.length;
-            updateFlashcard();
-        }
-
-        function prevCard() {
-            showingTranslation = false;
-            currentCardIndex = (currentCardIndex - 1 + flashcards.length) % flashcards.length;
-            updateFlashcard();
-        }
-
-        // Initialize on load
-        renderDictionary(dictionaryData);
-        updateFlashcard();
+        // Initialize
+        loadLesson();
+        renderLexicon(corpus);
     </script>
 </body>
 </html>
